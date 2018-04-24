@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include<QLabel>
+#include<cstring>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -8,6 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setupGrid();
     colourCells();
+
+    generationLabel = new QLabel (this);
+    generationLabel->setText("Generation number: 0   Population number: 0");
+    ui->horizontalLayout_2->addWidget(generationLabel);
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT (handleStart()));
@@ -20,10 +27,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::colourCell (int i, int j, bool isLive){
+void MainWindow::colourCell (int i, int j, bool isAlive){
     QPalette p(buttons[i][j]->palette());
 
-    p.setColor(QPalette::Button, QColor(isLive ? "#ffd500" : "#767676"));
+    p.setColor(QPalette::Button, QColor(isAlive ? "#ffd500" : "#767676"));
     buttons[i][j]->setPalette(p);
 }
 
@@ -51,6 +58,11 @@ void MainWindow::setupGrid(){
 
 void MainWindow::handleStart(){
     if (gameOn) on_stepButton_clicked();
+
+    std::string tempString = "Generation number: " + std::to_string (gameBoard.getGenerationNumber())
+            + "   Population number: " + std::to_string(gameBoard.getPopulationNumber());
+    QString genNum = QString::fromStdString(tempString);
+    generationLabel->setText(genNum);
 }
 
 void MainWindow::handleButton(int i, int j){

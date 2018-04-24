@@ -20,12 +20,12 @@
       <x>0</x>
       <y>40</y>
       <width>531</width>
-      <height>501</height>
+      <height>481</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -60,6 +60,17 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>520</y>
+      <width>321</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

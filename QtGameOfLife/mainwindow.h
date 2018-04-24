@@ -6,6 +6,7 @@
 #include <QGridLayout>
 #include <QTimer>
 #include <QPushButton>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,8 @@ private slots:
     void handleButton (int i, int j);
     void handleStart ();
 
+    void on_label_windowIconTextChanged(const QString &iconText);
+
 signals:
     void clicked (bool checked);
 
@@ -34,10 +37,11 @@ private:
     Ui::MainWindow *ui;
     QPushButton *buttons[TableSize][TableSize];
     QTimer *timer;
+    QLabel *generationLabel;
     Board gameBoard;
     void setupGrid ();
     void colourCells ();
-    void colourCell (int i, int j, bool isLive);
+    void colourCell (int i, int j, bool isAlive);
 };
 
 #endif // MAINWINDOW_H

@@ -8,14 +8,19 @@ const int TableSize = 50;
 class Board{
 public:
     Board();
-    int getNeighbours (int i, int j) const;
+    int countNeighbours (int i, int j) const;
     bool state (int i, int j) const;
     void change (int i, int j);
     void makeTurn ();
     void clear ();
+
+    int getGenerationNumber ();
+    int getPopulationNumber ();
 private:
     int cells[2][TableSize][TableSize];
     bool currTurn;
+    int generationNumber;
+    int populationNumber;
 };
 
 #endif // BOARD_H

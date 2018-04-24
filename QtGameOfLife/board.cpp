@@ -9,6 +9,15 @@ bool valid (int i, int j) {
 Board::Board(){
     clear ();
     currTurn = 0;
+    generationNumber = 0;
+}
+
+int Board::getGenerationNumber(){
+    return generationNumber;
+}
+
+int Board::getPopulationNumber(){
+    return populationNumber;
 }
 
 bool Board::state (int i, int j) const {
@@ -28,15 +37,23 @@ void Board::clear (){
 }
 
 void Board::makeTurn(){
+    int nextPopulationNumber = 0;
+
     for (int i = 0; i < TableSize; i++)
         for (int j = 0; j < TableSize; j++){
-            int neighbours = getNeighbours(i, j);
+            int neighbours = countNeighbours(i, j);
 
             if (cells[currTurn][i][j] == 1){
-                if (neighbours == 2 || neighbours == 3) cells[currTurn^1][i][j] = 1;
+                if (neighbours == 2 || neighbours == 3) {
+                    cells[currTurn^1][i][j] = 1;
+                    nextPopulationNumber++;
+                }
             }
             else{
-                if (neighbours == 3) cells[currTurn^1][i][j] = 1;
+                if (neighbours == 3) {
+                    cells[currTurn^1][i][j] = 1;
+                    nextPopulationNumber++;
+                }
             }
         }
 
@@ -45,9 +62,11 @@ void Board::makeTurn(){
             cells[currTurn][i][j] = 0;
 
     currTurn ^= 1;
+    generationNumber++;
+    populationNumber = nextPopulationNumber;
 }
 
-int Board::getNeighbours(int i, int j) const {
+int Board::countNeighbours(int i, int j) const {
     int neighbours = 0;
 
     if (valid (i-1, j)) neighbours += cells[currTurn][i-1][j];
