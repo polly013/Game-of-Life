@@ -20,13 +20,20 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_startButton_clicked(bool checked);
-    void on_stepButton_clicked();
+    void on_startButton_clicked (bool checked);
+    void on_stepButton_clicked ();
+    void on_clearButton_clicked ();
+    void handleButton (int i, int j);
+    void handleStart ();
+
+signals:
+    void clicked (bool checked);
 
 private:
+    bool gameOn;
     Ui::MainWindow *ui;
-    QTimer *timer;
     QPushButton *buttons[TableSize][TableSize];
+    QTimer *timer;
     Board gameBoard;
     void setupGrid ();
     void colourCells ();

@@ -7,6 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupGrid();
+    colourCells();
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT (handleStart()));
+
+    timer->start(250);
 }
 
 MainWindow::~MainWindow()
@@ -37,19 +43,35 @@ void MainWindow::setupGrid(){
         for (int j = 0; j < TableSize; j++){
             buttons[i][j] = new QPushButton ();
             ui->gridLayout->addWidget(buttons[i][j], i, j);
+            connect(this->buttons[i][j], &QPushButton::clicked, [=]{
+                handleButton(i, j);
+            });
         }
 }
 
+void MainWindow::handleStart(){
+    if (gameOn) on_stepButton_clicked();
+}
+
+void MainWindow::handleButton(int i, int j){
+    gameBoard.change(i, j);
+    colourCell(i, j, gameBoard.state(i, j));
+}
+
 void MainWindow::on_startButton_clicked(bool checked){
-    if (checked == 1) {
-        ui->startButton->setText("Pause");
-    }
-    else {
-        ui->startButton->setText("Start");
-    }
+    ui->startButton->setText(checked ? "Pause" : "Start");
+
+    if (checked) gameOn = true;
+    else gameOn = false;
 }
 
 void MainWindow::on_stepButton_clicked(){
     gameBoard.makeTurn();
-    colourCells();
+    colourCells ();
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    gameBoard.clear();
+    colourCells ();
 }
