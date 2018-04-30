@@ -6,24 +6,20 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow){
     ui->setupUi(this);
     setupGrid();
     colourCells();
 
     generationLabel = new QLabel (this);
-    generationLabel->setText("Generation number: 0   Population number: 0");
+    generationLabel->setText("Generation: 0 Population: 0");
     ui->horizontalLayout_2->addWidget(generationLabel);
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT (handleStart()));
-
-    timer->start(250);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
 
@@ -57,12 +53,7 @@ void MainWindow::setupGrid(){
 }
 
 void MainWindow::handleStart(){
-    if (gameOn) on_stepButton_clicked();
-
-    std::string tempString = "Generation number: " + std::to_string (gameBoard.getGenerationNumber())
-            + "   Population number: " + std::to_string(gameBoard.getPopulationNumber());
-    QString genNum = QString::fromStdString(tempString);
-    generationLabel->setText(genNum);
+    on_stepButton_clicked();
 }
 
 void MainWindow::handleButton(int i, int j){
@@ -73,17 +64,21 @@ void MainWindow::handleButton(int i, int j){
 void MainWindow::on_startButton_clicked(bool checked){
     ui->startButton->setText(checked ? "Pause" : "Start");
 
-    if (checked) gameOn = true;
-    else gameOn = false;
+    if (checked) timer->start(250);
+    else timer->stop();
 }
 
 void MainWindow::on_stepButton_clicked(){
     gameBoard.makeTurn();
-    colourCells ();
+    colourCells();
+
+    std::string tempString = "Generation: " + std::to_string (gameBoard.getGenerationNumber())
+            + " Population: " + std::to_string(gameBoard.getPopulationNumber());
+    QString genNum = QString::fromStdString(tempString);
+    generationLabel->setText(genNum);
 }
 
-void MainWindow::on_clearButton_clicked()
-{
+void MainWindow::on_clearButton_clicked(){
     gameBoard.clear();
     colourCells ();
 }

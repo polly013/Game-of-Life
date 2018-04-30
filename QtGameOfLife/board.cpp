@@ -1,9 +1,7 @@
 #include "board.h"
 
 bool valid (int i, int j) {
-    if (i < 0 || j < 0) return false;
-    if (i >= TableSize || j >= TableSize) return false;
-    return true;
+    return (0 <= i && i < TableSize && 0 <= j && j < TableSize);
 }
 
 Board::Board(){
