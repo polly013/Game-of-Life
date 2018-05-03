@@ -8,22 +8,16 @@ Board::Board(){
     clear ();
     currTurn = 0;
     generationNumber = 0;
+    populationNumber = 0;
 }
 
-int Board::getGenerationNumber(){
-    return generationNumber;
-}
-
-int Board::getPopulationNumber(){
-    return populationNumber;
-}
-
-bool Board::state (int i, int j) const {
+bool Board::getState (int i, int j) const {
     return cells[currTurn][i][j];
 }
 
 void Board::change (int i, int j){
     cells[currTurn][i][j] ^= 1;
+    cells[currTurn][i][j] ? populationNumber++ : populationNumber--;
 }
 
 void Board::clear (){
@@ -32,6 +26,9 @@ void Board::clear (){
             cells[0][i][j] = 0;
             cells[1][i][j] = 0;
         }
+
+    generationNumber = 0;
+    populationNumber = 0;
 }
 
 void Board::makeTurn(){

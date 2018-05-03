@@ -16,6 +16,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+public slots:
+    void saveToFile ();
+    void loadToFile ();
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -26,8 +30,6 @@ private slots:
     void on_clearButton_clicked ();
     void handleButton (int i, int j);
     void handleStart ();
-
-    void on_label_windowIconTextChanged(const QString &iconText);
 
 signals:
     void clicked (bool checked);
@@ -42,6 +44,7 @@ private:
     void setupGrid ();
     void colourCells ();
     void colourCell (int i, int j, bool isAlive);
+    void updateGeneration ();
 };
 
 #endif // MAINWINDOW_H
