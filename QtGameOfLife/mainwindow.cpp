@@ -10,23 +10,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow){
     ui->setupUi(this);
     setupGrid();
-    colourCells();
 
     generationLabel = new QLabel (this);
-    updateGeneration();
     ui->horizontalLayout_2->addWidget(generationLabel);
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT (handleStart()));
     connect(ui->saveButton, SIGNAL(clicked(bool)), this, SLOT (saveToFile()));
     connect(ui->loadButton, SIGNAL(clicked(bool)), this, SLOT (loadToFile()));
+
+    update();
 }
 
 MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::colourCell (int i, int j, bool isAlive){
+void MainWindow::colourCell(int i, int j, bool isAlive){
     QPalette p(buttons[i][j]->palette());
 
     p.setColor(QPalette::Button, QColor(isAlive ? "#ffd500" : "#767676"));
@@ -39,11 +39,16 @@ void MainWindow::colourCells (){
             colourCell (i, j, gameBoard.getState(i, j));
 }
 
-void MainWindow::updateGeneration (){
+void MainWindow::updateTextLabel (){
     std::string tempString = "Generation: " + std::to_string (gameBoard.generationNumber)
             + " Population: " + std::to_string(gameBoard.populationNumber);
 
     generationLabel->setText(QString::fromStdString(tempString));
+}
+
+void MainWindow::update(){
+    colourCells();
+    updateTextLabel();
 }
 
 void MainWindow::setupGrid(){
@@ -68,8 +73,7 @@ void MainWindow::handleStart(){
 
 void MainWindow::handleButton(int i, int j){
     gameBoard.change(i, j);
-    colourCell(i, j, gameBoard.getState(i, j));
-    updateGeneration();
+    update();
 }
 
 void MainWindow::on_startButton_clicked(bool checked){
@@ -81,14 +85,12 @@ void MainWindow::on_startButton_clicked(bool checked){
 
 void MainWindow::on_stepButton_clicked(){
     gameBoard.makeTurn();
-    colourCells();
-    updateGeneration();
+    update();
 }
 
 void MainWindow::on_clearButton_clicked(){
     gameBoard.clear();
-    colourCells();
-    updateGeneration();
+    update();
 }
 
 void MainWindow::saveToFile(){
@@ -131,7 +133,6 @@ void MainWindow::loadToFile(){
         savedState.get();
     }
 
-    colourCells();
-    updateGeneration();
+    update();
     savedState.close();
 }

@@ -17,7 +17,7 @@ bool Board::getState (int i, int j) const {
 
 void Board::change (int i, int j){
     cells[currTurn][i][j] ^= 1;
-    cells[currTurn][i][j] ? populationNumber++ : populationNumber--;
+    populationNumber += (cells[currTurn][i][j] ? +1 : -1);
 }
 
 void Board::clear (){
