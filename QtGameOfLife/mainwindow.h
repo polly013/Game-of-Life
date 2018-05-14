@@ -35,7 +35,6 @@ signals:
     void clicked (bool checked);
 
 private:
-    bool gameOn;
     Ui::MainWindow *ui;
     QPushButton *buttons[TableSize][TableSize];
     QTimer *timer;
@@ -44,7 +43,8 @@ private:
     void setupGrid ();
     void colourCells ();
     void colourCell (int i, int j, bool isAlive);
-    void updateGeneration ();
+    void update ();
+    void updateTextLabel ();
 };
 
 #endif // MAINWINDOW_H
